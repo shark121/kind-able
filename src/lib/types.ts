@@ -64,7 +64,6 @@ export const FundraiserSchema = z
         },
         { message: "The end date is invalid" }
       ),
-    time: z.string(),
     description: z.string(),
     imageFile: z.any(),
     // creatorMailAdress: z.string().email(),
