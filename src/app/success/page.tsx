@@ -15,10 +15,19 @@ export default function SuccessPage() {
 
   useEffect(() => {
     const sessionId = searchParams.get("session_id");
+    const fundraiserId = searchParams.get("fundraiserId");
+    const title = searchParams.get("title");
+    
+    if(!sessionId || !fundraiserId || !title) {
+      setBuffering(false);
+      window.location.href = "/"
+      return;
+    }
+
     console.log(sessionId);
     fetch("/api/payment/response", {
       method: "POST",
-      body: JSON.stringify({ sessionId }),
+      body: JSON.stringify({ sessionId, fundraiserId, title }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -35,9 +44,6 @@ export default function SuccessPage() {
       });
   }, []);
 
-//   setTimeout(() => {
-//     setBuffering(false);
-//   }, 500);
 
   if (loading)
     return (

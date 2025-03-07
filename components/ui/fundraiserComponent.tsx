@@ -22,7 +22,7 @@ export default function FundraiserComponent({ fundraiser }: { fundraiser: Fundra
 
   const startDateToObject = new Date(fundraiser.startDate);
   const startDateToString = startDateToObject.toDateString();
-  const progresslevel = (fundraiser.raisedAmount / fundraiser.goalAmount) * 100;
+  const progresslevel = (Number(fundraiser.raisedAmount) / Number(fundraiser.goalAmount)) * 100;
   console.log(fundraiser.raisedAmount, fundraiser.goalAmount);
   console.log(progresslevel);
   

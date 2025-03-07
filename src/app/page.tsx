@@ -19,10 +19,13 @@ export default function Home() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        console.log(res);
+        return (await res.json());
+      })
       .then((data) => {
-        setFundraiserState(data.data);
-        console.log(data.data);
+        setFundraiserState(data);
+        console.log(data);
       });
   }, []);
 

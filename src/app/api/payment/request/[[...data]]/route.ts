@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
 return await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
+    // phone_number_collection : "",
     line_items: [
       {
         price_data: {
@@ -33,7 +34,7 @@ return await stripe.checkout.sessions.create({
         quantity: 1,
       },
     ],
-    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}&fundraiserId=${data.id}`,
+    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}&fundraiserId=${data.id}&title=${data.title}`,
     cancel_url: "https://example.com/cancel",
   }).then((session) => {
     console.log(session.url);

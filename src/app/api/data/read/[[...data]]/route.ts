@@ -1,8 +1,22 @@
-import { NextResponse, NextRequest } from "next/server";
-import { data } from "../../../../../../data";
+import { NextRequest, NextResponse } from 'next/server';
+import {getDoc, doc, collection, getDocs} from "firebase/firestore"
+import {database} from "@/firebaseconfig"
 
-export async function GET(req: NextRequest, context: { params: { data: string[] } }) {
-  const reqdata = await context.params
-    console.log(reqdata);
-  return reqdata.data ? NextResponse.json({data: data.fundraisers.find(el => el.id === reqdata.data[0])}) : NextResponse.json({ data: data.fundraisers });
+
+const fundraiserCollection = collection(database, "fundraisers")
+
+
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ data: string[] }> }
+) {
+  const params = await context.params;
+  const response =
+    params.data === undefined || params.data.length === 0
+      ? (await getDocs(fundraiserCollection)).docs.map(doc => doc.data())
+      : (await getDoc(doc(fundraiserCollection, params.data[0]))).data();
+      // : await fetch(`http://localhost:5000/fundraisers/${params.data[0]}`);
+  
+  console.log(response)
+  return NextResponse.json(response);
 }

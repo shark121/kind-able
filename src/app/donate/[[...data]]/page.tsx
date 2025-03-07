@@ -12,7 +12,7 @@ import { title } from "process";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 
-export default function FundraiserScreen1() {
+export default function FundraiserScreen() {
   const [amount, setAmount] = useState<number>(0);
   const [fundraiser, setFundraiser] = useState<FundraiserSchemaType>();
   const [progress, setProgress] = useState<number>(0);
@@ -28,19 +28,20 @@ export default function FundraiserScreen1() {
     fetch(`/api/data/read/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setFundraiser(data.data);
-        setProgress((data.data.raisedAmount / data.data.goalAmount) * 100);
+        setFundraiser(data);
+        setProgress((data.raisedAmount / data.goalAmount) * 100);
         console.log(data);
       });
   }, []);
 
   function handleOnclick() {
-    fetch("/api/payment/request", {
+    fundraiser && sessionStorage.setItem(fundraiser.id, JSON.stringify(fundraiser));
+    fundraiser && fetch("/api/payment/request", {
       method: "POST",
       body: JSON.stringify({
         amount,
-        id: fundraiser ? fundraiser.id : null,
-        title: fundraiser ? fundraiser.title : null,
+        id:  fundraiser.id ,
+        title:  fundraiser.title ,
       }),
       headers: {
         "Content-Type": "application/json",
